@@ -1,0 +1,139 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #222;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+}
+
+.game-container {
+    background: #000;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.stats {
+    color: white;
+    margin-bottom: 10px;
+    display: flex;
+    gap: 20px;
+}
+
+.controls {
+    color: white;
+    margin-bottom: 15px;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.hero-block {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background: url('images/tile-P.png');
+    background-size: contain;
+    vertical-align: middle;
+}
+
+.enemy-block {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background: url('images/tile-E.png');
+    background-size: contain;
+    vertical-align: middle;
+}
+
+.sword-block {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background: url('images/tile-SW.png');
+    background-size: contain;
+    vertical-align: middle;
+}
+
+.potion-block {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background: url('images/tile-HP.png');
+    background-size: contain;
+    vertical-align: middle;
+}
+
+.health-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.health-bar {
+    width: 200px;
+    height: 20px;
+    background: #333;
+    border: 1px solid #666;
+}
+
+.health {
+    height: 100%;
+    background: red;
+    transition: width 0.3s ease;
+}
+
+.field {
+    display: grid;
+    grid-template-columns: repeat(40, 20px);
+    grid-template-rows: repeat(24, 20px);
+    gap: 1px;
+    background: #111;
+    padding: 1px;
+}
+
+.tile {
+    width: 20px;
+    height: 20px;
+    position: relative;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.tile.wall {
+    background-image: url('images/tile-W.png');
+}
+
+.tile.floor {
+    background-image: url('images/tile-.png');
+}
+
+.tile.hero {
+    background-image: url('images/tile-P.png');
+}
+
+.tile.enemy {
+    background-image: url('images/tile-E.png');
+}
+
+.tile.sword {
+    background-image: url('images/tile-SW.png');
+}
+
+.tile.potion {
+    background-image: url('images/tile-HP.png');
+}
+
+.tile .health {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    background: red;
+} 
