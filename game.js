@@ -84,7 +84,7 @@ var Game = {
         handleAttack: function(attacker, targets, baseDamage, onDeath) {
             for (var i = targets.length - 1; i >= 0; i--) {
                 var target = targets[i];
-                if (this.isNearby(target, attacker)) {
+                if (Game.helpers.isNearby(target, attacker)) {
                     target.health -= attacker.attackPower * baseDamage;
                     if (target.health <= 0 && onDeath) {
                         onDeath(target, i);
