@@ -82,14 +82,25 @@ var Game = {
         },
 
         handleAttack: function(attacker, targets, baseDamage, onDeath) {
+            var damageDealt = false;
             for (var i = targets.length - 1; i >= 0; i--) {
                 var target = targets[i];
                 if (Game.helpers.isNearby(target, attacker)) {
-                    target.health -= attacker.attackPower * baseDamage;
-                    if (target.health <= 0 && onDeath) {
-                        onDeath(target, i);
+                    var damage = attacker.attackPower * baseDamage;
+                    target.health -= damage;
+                    damageDealt = true;
+                    console.log('Damage dealt:', damage, 'New health:', target.health);
+                    if (target.health <= 0) {
+                        target.health = 0;
+                        if (onDeath) {
+                            onDeath(target, i);
+                        }
                     }
                 }
+            }
+            if (damageDealt) {
+                Game.updateUI();
+                Game.render();
             }
         }
     },
@@ -360,7 +371,12 @@ var Game = {
 
     updateUI: function() {
         $('#attack-power').text(this.hero.attackPower);
-        $('.health-bar .health').css('width', (this.hero.health / this.hero.maxHealth * 100) + '%');
+        var healthPercent = (this.hero.health / this.hero.maxHealth * 100);
+        console.log('Updating hero health UI:', healthPercent + '%');
+        
+        $('.hero .health').css('width', healthPercent + '%');
+        
+        $('.stats .health-container .health').css('width', healthPercent + '%');
     },
 
     render: function() {
@@ -430,7 +446,6 @@ var Game = {
                     break;
                 case self.config.controls.attack:
                     self.heroAttack();
-                    self.enemiesMove();
                     self.enemiesAttack();
                     self.render();
                     e.preventDefault();
@@ -491,10 +506,21 @@ var Game = {
     },
 
     enemiesAttack: function() {
-        this.helpers.handleAttack.call(this, this.hero, this.enemies, this.config.enemyBaseDamage, function() {
-            alert('Игра окончена!');
-            this.init();
-        }.bind(this));
+        for (var i = 0; i < this.enemies.length; i++) {
+            var enemy = this.enemies[i];
+            if (this.helpers.isNearby(enemy, this.hero)) {
+                this.hero.health -= this.config.enemyBaseDamage * enemy.attackPower;
+                console.log('Hero takes damage:', this.config.enemyBaseDamage * enemy.attackPower, 'New health:', this.hero.health);
+                if (this.hero.health <= 0) {
+                    this.hero.health = 0;
+                    alert('Игра окончена!');
+                    this.init();
+                    return;
+                }
+            }
+        }
+        this.updateUI();
+        this.render();
     },
 
     checkItems: function() {
